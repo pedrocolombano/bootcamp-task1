@@ -1,10 +1,13 @@
 package com.devsuperior.dscatalog.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.devsuperior.dscatalog.dto.ClientDTO;
 import com.devsuperior.dscatalog.entities.Client;
 import com.devsuperior.dscatalog.repositories.ClientRepository;
 
@@ -18,9 +21,10 @@ public class ClientService {
 		this.clientRepository = clientRepository;
 	}
 
-	public Page<Client> findAllPaged(PageRequest page) {
+	@Transactional(readOnly = true)
+	public Page<ClientDTO> findAllPaged(PageRequest page) {
 		Page<Client> clients = this.clientRepository.findAll(page);
-		return clients;
+		return clients.map(x -> new ClientDTO(x));
 	}
 
 }
