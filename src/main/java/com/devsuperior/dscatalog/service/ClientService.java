@@ -1,8 +1,8 @@
 package com.devsuperior.dscatalog.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.devsuperior.dscatalog.entities.Client;
@@ -18,8 +18,9 @@ public class ClientService {
 		this.clientRepository = clientRepository;
 	}
 
-	public List<Client> findAll() {
-		return this.clientRepository.findAll();
+	public Page<Client> findAllPaged(PageRequest page) {
+		Page<Client> clients = this.clientRepository.findAll(page);
+		return clients;
 	}
 
 }
