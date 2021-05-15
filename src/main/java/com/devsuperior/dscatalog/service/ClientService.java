@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuperior.dscatalog.dto.ClientDTO;
 import com.devsuperior.dscatalog.entities.Client;
 import com.devsuperior.dscatalog.repositories.ClientRepository;
+import com.devsuperior.dscatalog.service.exception.ResourceNotFoundException;
 
 @Service
 public class ClientService {
@@ -25,6 +26,12 @@ public class ClientService {
 	public Page<ClientDTO> findAllPaged(PageRequest page) {
 		Page<Client> clients = this.clientRepository.findAll(page);
 		return clients.map(x -> new ClientDTO(x));
+	}
+	
+	@Transactional(readOnly = true)
+	public ClientDTO findById(Long id) {
+		Client client = this.clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client not found"));
+		return new ClientDTO(client);
 	}
 
 }
